@@ -1,0 +1,18 @@
+Package: rsixygen
+Type: Package
+Title: Build Skeleton Roxygen Docs for R6 Classes
+Version: 0.0.1
+Authors@R: c(
+    person("James", "Lamb", email = "jaylamb20@gmail.com", role = c("aut", "cre"))
+    )
+Maintainer: James Lamb <jaylamb20@gmail.com>
+Description: This package auto-gens documentation templates for R6 objects
+Imports:
+    assertthat,
+    R6,
+    utils
+Suggests:
+    testthat
+License: file LICENSE
+LazyData: TRUE
+RoxygenNote: 6.0.1
