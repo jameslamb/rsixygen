@@ -7,6 +7,16 @@ This package is experimental, and implements a standard proposed by @cwschultz88
 
 To be clear, it does NOT automatically generate full Roxygen docs the way that `roxygen2::roxygenize` does. Instead, it dumps Roxygen skeletons to a directory of files. You will still have to do some manual work after this, but the package cuts down on a LOT of copy-pasting, indentation fixes, and general sadness around missing curly braces.
 
+## Installation
+
+This package is not yet on CRAN. For now, just install from Github.
+
+```
+Rscript -e "devtools::install_github('jameslamb/rsixygen')"
+```
+
+## Examples
+
 All you have to do is this:
 
 ```
