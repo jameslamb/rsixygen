@@ -13,6 +13,6 @@ document_package(pkg_name, out_dir = file.path(getwd(), "roxy_docsy"))
 }
 \description{
 Given a package name, find al lthe R6 objects in that package's
-             namespace and build skeleton Roxygen docs for each one. One file 
+             namespace and build skeleton Roxygen docs for each one. One file
              will be created in \code{out_dir} for each object.
 }

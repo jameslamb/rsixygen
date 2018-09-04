@@ -7,13 +7,13 @@
 #' @importFrom R6 R6Class
 #' @export
 find_R6_objects <- function(pkg_name){
-    
+
     assertthat::assert_that(
         assertthat::is.string(pkg_name)
     )
-    
+
     pkg_env <- loadNamespace(pkg_name)
-    
+
     R6_objects <- lapply(
         ls(pkg_env)
         , function(obj_name){
@@ -25,9 +25,9 @@ find_R6_objects <- function(pkg_name){
             }
         }
     )
-    
+
     # Drop empty stuff
     R6_objects <- Filter(function(l){length(l) > 0}, R6_objects)
-    
+
     return(R6_objects)
 }
