@@ -1,15 +1,27 @@
 
 # [description] Get signature string from a function object
+# [notes] Sometimes weird stuff can happen with str(). Consider,
+#         for example:
+#
+#          f <- function(){4 + 4; return(TRUE)}
+#          utils::str(f)
+#
+#         To get around this, I did some horrible regex stuff here.
 #' @importFrom utils capture.output str
 .get_sig <- function(func, func_name){
     sig <- paste0(
-        trimws(
-            utils::capture.output(
-                utils::str(func)
+        grep(
+            pattern = "^function"
+            , x = trimws(
+                utils::capture.output(
+                    utils::str(func)
+                )
             )
+            , value = TRUE
         )
         , collapse = " "
     )
+
     return(trimws(gsub("^function ", func_name, sig)))
 }
 

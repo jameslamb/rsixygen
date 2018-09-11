@@ -1,7 +1,7 @@
 Package: rsixygen
 Type: Package
 Title: Build Skeleton Roxygen Docs for R6 Classes
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: c(
     person("James", "Lamb", email = "jaylamb20@gmail.com", role = c("aut", "cre"))
     )
