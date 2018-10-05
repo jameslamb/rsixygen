@@ -12,7 +12,7 @@ To be clear, it does NOT automatically generate full Roxygen docs the way that `
 This package is not yet on CRAN. For now, just install from Github.
 
 ```
-Rscript -e "devtools::install_github('jameslamb/rsixygen')"
+devtools::install_github('jameslamb/rsixygen')
 ```
 
 ## Examples
@@ -28,7 +28,7 @@ That call will create a set of `.R` files (one per R6 class) in a new directory 
 If you don't want to deal with the entire package, you can target an individual object:
 
 ```
-rsixygen::document_class(lightgbm:::Booster))
+rsixygen::document_class(lightgbm:::Booster)
 ```
 
 I hope you find this useful. PRs are welcome!
