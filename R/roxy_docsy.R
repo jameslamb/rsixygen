@@ -1,3 +1,29 @@
+CONSTRUCTOR_METHODS <- c("new", "initialize")
+SPECIAL_METHODS <- c("clone", "print", "finalize")
+
+CLONE_DESCRIBE <- "Method for copying an object. See \\href{https://adv-r.hadley.nz/r6.html#r6-semantics}{\\emph{Advanced R}} for the intricacies of R6 reference semantics." 
+CLONE_PARAM <- "logical. Whether to recursively clone nested R6 objects."
+CLONE_RETURN <- "Cloned object of this class."
+
+# [description] Document inheritance and link to parent class
+.inherit_link <- function(aClass){
+    
+    # If class does not inherit anything, return NULL
+    if (is.null(aClass$get_inherit())) {
+        return(NULL)
+    }
+    
+    # Get parent class name and environment (package it's from)
+    parentClassName <- aClass$get_inherit()$classname
+    parentClassEnv <- environmentName(aClass$get_inherit()$parent_env)
+    
+    out <- sprintf("Inherits: \\code{\\link[%s]{%s}}\n"
+                   , parentClassEnv
+                   , parentClassName
+    )
+    
+    return(out)
+}
 
 # [description] Get signature string from a function object
 # [notes] Sometimes weird stuff can happen with str(). Consider,
@@ -38,7 +64,10 @@
     )
 
     # Add arguments?
-    los_argumentos <- names(formals(func))
+    
+    # Throws unavoidable warning if no arguments, but we don't really care
+    los_argumentos <- suppressWarnings(names(formals(func)))
+    
     if (length(los_argumentos) > 0){
 
         arg_details <- NULL
@@ -77,6 +106,7 @@
     return(out)
 }
 
+# [description] Class constructor (initialize) block
 .constructor_block <- function(aClass){
     out <- paste0(
         "@section Class Constructor:\n"
@@ -87,62 +117,162 @@
     return(out)
 }
 
-.public_methods_block <- function(aClass){
-
-    out <- paste0(
-        "@section Public Methods:\n"
-        , "\\describe{\n"
-    )
-
-    func_names <- base::setdiff(
-        names(aClass$public_methods)
-        , "clone"
-    )
-    for (func_name in func_names){
-
-        # skip the constructor. It gets special treatment
-        if (func_name %in% c("new", "initialize")){
-            next
-        }
-
-        out <- paste0(
+# [description] Returns vector of public method description items
+#' @importFrom stats setNames
+.describe_public_methods <- function(aClass) {
+    
+    # Intialize empty vector to append additional method descriptions to
+    out <- NULL
+    
+    # If this class has a parent class, do the parent first
+    if (!is.null(aClass$get_inherit())) {
+        # Append parent class method descriptions
+        out <- c(
             out
-            , .describe_function(aClass$public_methods[[func_name]], func_name)
+            , .describe_public_methods(aClass$get_inherit())
         )
     }
+    
+    # Get names of public methods for this class
+    # We document constructor and other special methods separately
+    funcNames <- base::setdiff(
+        names(aClass$public_methods)
+        , c(CONSTRUCTOR_METHODS, SPECIAL_METHODS)
+    )
+    
+    # Iterate through this class' public methods
+    for (thisFuncName in funcNames){
+        # Append description for this function to out vector
+        out <- c(
+            out
+            , stats::setNames(
+                object = .describe_function(aClass$public_methods[[thisFuncName]], thisFuncName)
+                , nm = thisFuncName 
+            )
+        )
+    }
+    
+    # Identify duplicates by name. We want to keep the latest one because it will be a child class'
+    itemsToKeep <- !duplicated(names(out), fromLast = TRUE)
+    
+    return(out[itemsToKeep])
+}
 
-    out <- paste0(out, "}\n")
+# [description] Generates public methods block
+.public_methods_block <- function(aClass){
+
+    # Get vector of descriptions
+    descriptVec <- .describe_public_methods(aClass)
+    
+    # Collapse into doc block
+    out <- paste0(
+        "@section Public Methods:\n"
+        , "\\describe{\n" 
+        , paste0(descriptVec, collapse = "")
+        , "}\n"
+    )
+    
     return(out)
 }
 
-# Document public fields (both static fields and active bindings)
-.public_member_block <- function(aClass){
+# [description] Generates vector of public fields documentation 
+# (both static fields and active bindings)
+.get_public_fields <- function(aClass) {
+    
+    # Intialize empty vector to append additional method descriptions to
+    out <- NULL
+    
+    # If this class has a parent class, do the parent first
+    if (!is.null(aClass$get_inherit())) {
+        # Append parent class public fields
+        out <- c(out, .get_public_fields(aClass$get_inherit()))
+    }
+    
+    # Add this class' static fields and active bindings
+    # Keep only unique
+    out <- unique(c(
+        out
+        , names(aClass$public_fields)
+        , names(aClass$active)
+    ))
+    
+    return(out)
+    
+}
+
+# [description] Generates block for public fields documentation 
+.public_field_block <- function(aClass){
 
     out <- paste0(
-        "@section Public Members:\n"
+        "@section Public Fields:\n"
         , "\\describe{\n"
     )
 
-    public_members <- c(
-        names(aClass$public_fields)
-        , names(aClass$active)
+    # Get names of public fields
+    public_fields <- .get_public_fields(aClass)
+    
+    # Construct document item for each field
+    items <- vapply(
+        public_fields
+        , FUN = function(x){
+            paste0(
+                "    \\item{\\bold{\\code{"
+                , x
+                , "}}}{: ~~DESCRIBE THIS FIELD~~}\n"
+            )
+        }
+        , FUN.VALUE = ""
     )
-
-    items <- sapply(public_members, function(x){
-        paste0(
-            "    \\item{\\bold{\\code{"
-            , x
-            , "}}}{: ~~DESCRIBE THIS FIELD~~}\n"
-        )
-    })
-
+    
+    # Collapse document items into block
     out <- paste0(
         out
         , paste0(items, collapse = "")
         , "}\n"
     )
+    
     return(out)
 }
+
+# [description] Generate special methods block
+.special_methods_block <- function(aClass){
+    
+    descriptVec <- NULL
+    
+    # Iterate through this class' public methods
+    for (thisFuncName in SPECIAL_METHODS){
+        
+        # if not defined, skip it
+        if (!thisFuncName %in% names(aClass$public_methods)) {
+            next
+        }
+        
+        thisFuncDescript <- .describe_function(aClass$public_methods[[thisFuncName]], thisFuncName)
+        
+        # if the function is clone, put in standard documentation
+        if (thisFuncName == "clone") {
+            thisFuncDescript <- sub("~~DESCRIBE THE METHOD~~", CLONE_DESCRIBE, thisFuncDescript)
+            thisFuncDescript <- sub("~~DESCRIBE THIS PARAMETER ", CLONE_PARAM, thisFuncDescript)
+            thisFuncDescript <- sub("~~WHAT DOES THIS RETURN~~", CLONE_RETURN, thisFuncDescript)
+        }
+                
+        # Append description for this function to out vector
+        descriptVec <- c(descriptVec, thisFuncDescript)
+    }
+    
+    # Collapse into doc block
+    out <- paste0(
+        "@section Special Methods:\n"
+        , "\\describe{\n" 
+        , paste0(descriptVec, collapse = "")
+        , "}\n"
+    )
+    
+    return(out)
+}
+
+
+
 
 
 #' @title Document an R6 Class
@@ -187,16 +317,18 @@ document_class <- function(aClass){
     assertthat::assert_that(
         R6::is.R6Class(aClass)
     )
-
-    out <- paste0(
-        "#' "
+    
+    outSections <- c(
+        "\n "
+        , .inherit_link(aClass)
         , .constructor_block(aClass)
-        , "\n"
         , .public_methods_block(aClass)
-        , "\n"
-        , .public_member_block(aClass)
+        , .public_field_block(aClass)
+        , .special_methods_block(aClass)
     )
-
+    
+    out <- paste0(outSections, collapse = "\n")
+    
     # This last little gsub makes them Roxygen comments!
-    return(gsub("\n", "\n#' ", out))
+    return(return(gsub("\n", "\n#' ", out)))
 }
