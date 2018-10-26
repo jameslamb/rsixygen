@@ -252,7 +252,7 @@ CLONE_RETURN <- "Cloned object of this class."
         # if the function is clone, put in standard documentation
         if (thisFuncName == "clone") {
             thisFuncDescript <- sub("~~DESCRIBE THE METHOD~~", CLONE_DESCRIBE, thisFuncDescript)
-            thisFuncDescript <- sub("~~DESCRIBE THIS PARAMETER ", CLONE_PARAM, thisFuncDescript)
+            thisFuncDescript <- sub("~~DESCRIBE THIS PARAMETER~~", CLONE_PARAM, thisFuncDescript)
             thisFuncDescript <- sub("~~WHAT DOES THIS RETURN~~", CLONE_RETURN, thisFuncDescript)
         }
                 
