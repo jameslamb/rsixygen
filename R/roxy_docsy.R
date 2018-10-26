@@ -66,7 +66,9 @@ CLONE_RETURN <- "Cloned object of this class."
     # Add arguments?
     
     # Throws unavoidable warning if no arguments, but we don't really care
-    los_argumentos <- suppressWarnings(names(formals(func)))
+    los_argumentos <- suppressWarnings({
+        names(formals(func))
+    })
     
     if (length(los_argumentos) > 0){
 
@@ -243,6 +245,8 @@ CLONE_RETURN <- "Cloned object of this class."
     for (thisFuncName in SPECIAL_METHODS){
         
         # if not defined, skip it
+        # clone is always defined by default, other special methods only exist if
+        # explicitly defined by the class definition
         if (!thisFuncName %in% names(aClass$public_methods)) {
             next
         }
