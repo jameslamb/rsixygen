@@ -47,7 +47,8 @@
                 arg_details
                 , "                    \\item{\\bold{\\code{"
                 , arg
-                , "}}: ~~DESCRIBE THIS PARAMETER }\n"
+                , "}}: ~~DESCRIBE THIS PARAMETER~~
+                 }\n"
             )
         }
 
