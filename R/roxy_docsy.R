@@ -1,27 +1,29 @@
 CONSTRUCTOR_METHODS <- c("new", "initialize")
 SPECIAL_METHODS <- c("clone", "print", "finalize")
 
-CLONE_DESCRIBE <- "Method for copying an object. See \\\\href{https://adv-r.hadley.nz/r6.html#r6-semantics}{\\emph{Advanced R}} for the intricacies of R6 reference semantics." 
+CLONE_DESCRIBE <- "Method for copying an object. See \\\\href{https://adv-r.hadley.nz/r6.html#r6-semantics}{\\emph{Advanced R}} for the intricacies of R6 reference semantics."
 CLONE_PARAM <- "logical. Whether to recursively clone nested R6 objects."
 CLONE_RETURN <- "Cloned object of this class."
 
 # [description] Document inheritance and link to parent class
 .inherit_link <- function(aClass){
-    
+
     # If class does not inherit anything, return NULL
     if (is.null(aClass$get_inherit())) {
         return(NULL)
     }
-    
+
     # Get parent class name and environment (package it's from)
-    parentClassName <- aClass$get_inherit()$classname
+    # Need to use the generator object name because that's the
+    # one that is required and important
+    parentClassName <- deparse(aClass$inherit)
     parentClassEnv <- environmentName(aClass$get_inherit()$parent_env)
-    
+
     out <- sprintf("Inherits: \\code{\\link[%s]{%s}}\n"
                    , parentClassEnv
                    , parentClassName
     )
-    
+
     return(out)
 }
 
@@ -64,12 +66,12 @@ CLONE_RETURN <- "Cloned object of this class."
     )
 
     # Add arguments?
-    
+
     # Throws unavoidable warning if no arguments, but we don't really care
     los_argumentos <- suppressWarnings({
         names(formals(func))
     })
-    
+
     if (length(los_argumentos) > 0){
 
         arg_details <- NULL
@@ -122,10 +124,10 @@ CLONE_RETURN <- "Cloned object of this class."
 # [description] Returns vector of public method description items
 #' @importFrom stats setNames
 .describe_public_methods <- function(aClass) {
-    
+
     # Intialize empty vector to append additional method descriptions to
     out <- NULL
-    
+
     # If this class has a parent class, do the parent first
     if (!is.null(aClass$get_inherit())) {
         # Append parent class method descriptions
@@ -134,14 +136,14 @@ CLONE_RETURN <- "Cloned object of this class."
             , .describe_public_methods(aClass$get_inherit())
         )
     }
-    
+
     # Get names of public methods for this class
     # We document constructor and other special methods separately
     funcNames <- base::setdiff(
         names(aClass$public_methods)
         , c(CONSTRUCTOR_METHODS, SPECIAL_METHODS)
     )
-    
+
     # Iterate through this class' public methods
     for (thisFuncName in funcNames){
         # Append description for this function to out vector
@@ -149,14 +151,14 @@ CLONE_RETURN <- "Cloned object of this class."
             out
             , stats::setNames(
                 object = .describe_function(aClass$public_methods[[thisFuncName]], thisFuncName)
-                , nm = thisFuncName 
+                , nm = thisFuncName
             )
         )
     }
-    
+
     # Identify duplicates by name. We want to keep the latest one because it will be a child class'
     itemsToKeep <- !duplicated(names(out), fromLast = TRUE)
-    
+
     return(out[itemsToKeep])
 }
 
@@ -165,31 +167,31 @@ CLONE_RETURN <- "Cloned object of this class."
 
     # Get vector of descriptions
     descriptVec <- .describe_public_methods(aClass)
-    
+
     # Collapse into doc block
     out <- paste0(
         "@section Public Methods:\n"
-        , "\\describe{\n" 
+        , "\\describe{\n"
         , paste0(descriptVec, collapse = "")
         , "}\n"
     )
-    
+
     return(out)
 }
 
-# [description] Generates vector of public fields documentation 
+# [description] Generates vector of public fields documentation
 # (both static fields and active bindings)
 .get_public_fields <- function(aClass) {
-    
+
     # Intialize empty vector to append additional method descriptions to
     out <- NULL
-    
+
     # If this class has a parent class, do the parent first
     if (!is.null(aClass$get_inherit())) {
         # Append parent class public fields
         out <- c(out, .get_public_fields(aClass$get_inherit()))
     }
-    
+
     # Add this class' static fields and active bindings
     # Keep only unique
     out <- unique(c(
@@ -197,12 +199,12 @@ CLONE_RETURN <- "Cloned object of this class."
         , names(aClass$public_fields)
         , names(aClass$active)
     ))
-    
+
     return(out)
-    
+
 }
 
-# [description] Generates block for public fields documentation 
+# [description] Generates block for public fields documentation
 .public_field_block <- function(aClass){
 
     out <- paste0(
@@ -212,7 +214,7 @@ CLONE_RETURN <- "Cloned object of this class."
 
     # Get names of public fields
     public_fields <- .get_public_fields(aClass)
-    
+
     # Construct document item for each field
     items <- vapply(
         public_fields
@@ -225,53 +227,53 @@ CLONE_RETURN <- "Cloned object of this class."
         }
         , FUN.VALUE = ""
     )
-    
+
     # Collapse document items into block
     out <- paste0(
         out
         , paste0(items, collapse = "")
         , "}\n"
     )
-    
+
     return(out)
 }
 
 # [description] Generate special methods block
 .special_methods_block <- function(aClass){
-    
+
     descriptVec <- NULL
-    
+
     # Iterate through this class' public methods
     for (thisFuncName in SPECIAL_METHODS){
-        
+
         # if not defined, skip it
         # clone is always defined by default, other special methods only exist if
         # explicitly defined by the class definition
         if (!thisFuncName %in% names(aClass$public_methods)) {
             next
         }
-        
+
         thisFuncDescript <- .describe_function(aClass$public_methods[[thisFuncName]], thisFuncName)
-        
+
         # if the function is clone, put in standard documentation
         if (thisFuncName == "clone") {
             thisFuncDescript <- sub("~~DESCRIBE THE METHOD~~", CLONE_DESCRIBE, thisFuncDescript)
             thisFuncDescript <- sub("~~DESCRIBE THIS PARAMETER~~", CLONE_PARAM, thisFuncDescript)
             thisFuncDescript <- sub("~~WHAT DOES THIS RETURN~~", CLONE_RETURN, thisFuncDescript)
         }
-                
+
         # Append description for this function to out vector
         descriptVec <- c(descriptVec, thisFuncDescript)
     }
-    
+
     # Collapse into doc block
     out <- paste0(
         "@section Special Methods:\n"
-        , "\\describe{\n" 
+        , "\\describe{\n"
         , paste0(descriptVec, collapse = "")
         , "}\n"
     )
-    
+
     return(out)
 }
 
@@ -321,7 +323,7 @@ document_class <- function(aClass){
     assertthat::assert_that(
         R6::is.R6Class(aClass)
     )
-    
+
     outSections <- c(
         "\n "
         , .inherit_link(aClass)
@@ -330,9 +332,9 @@ document_class <- function(aClass){
         , .public_field_block(aClass)
         , .special_methods_block(aClass)
     )
-    
+
     out <- paste0(outSections, collapse = "\n")
-    
+
     # This last little gsub makes them Roxygen comments!
     return(return(gsub("\n", "\n#' ", out)))
 }

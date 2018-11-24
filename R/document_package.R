@@ -1,7 +1,6 @@
-
 #' @title Get R6 skeleton for a package
 #' @name document_package
-#' @description Given a package name, find al lthe R6 objects in that package's
+#' @description Given a package name, find all the R6 objects in that package's
 #'              namespace and build skeleton Roxygen docs for each one. One file
 #'              will be created in \code{out_dir} for each object.
 #' @param pkg_name Name of the package to document
@@ -25,14 +24,16 @@ document_package <- function(pkg_name, out_dir = file.path(getwd(), "roxy_docsy"
         dir.create(out_dir)
     }
 
-    for (obj in R6_objects){
+    for (obj_name in names(R6_objects)){
 
-        out_file <- file.path(out_dir, paste0(obj$classname, ".R"))
+        # We want to use the generator object name and not the classname
+        # as classname is not required and can be NULL
+        out_file <- file.path(out_dir, paste0(obj_name, ".R"))
         file.create(out_file)
 
         cat("\n\n", file = out_file, append = TRUE)
 
-        cat(document_class(obj)
+        cat(document_class(R6_objects[[obj_name]])
             , file = out_file
             , append = TRUE)
     }
