@@ -6,7 +6,8 @@ Authors@R: c(
     person("James", "Lamb", email = "jaylamb20@gmail.com", role = c("aut", "cre"))
     )
 Maintainer: James Lamb <jaylamb20@gmail.com>
-Description: This package auto-gens documentation templates for R6 objects
+Description: Roxygen2 does not currently have built-in support documentation for R6 objects.
+             This project auto-gens documentation templates for R6 objects.
 Imports:
     assertthat,
     R6,
