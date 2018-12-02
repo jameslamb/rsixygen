@@ -3,7 +3,8 @@ Type: Package
 Title: Build Skeleton Roxygen Docs for R6 Classes
 Version: 0.1.1
 Authors@R: c(
-    person("James", "Lamb", email = "jaylamb20@gmail.com", role = c("aut", "cre"))
+    person("James", "Lamb", email = "jaylamb20@gmail.com", role = c("aut", "cre")),
+    person("Jay", "Qi", role = "ctb")
     )
 Maintainer: James Lamb <jaylamb20@gmail.com>
 Description: Roxygen2 does not currently have built-in support documentation for R6 objects.
