@@ -1,7 +1,7 @@
 
 context("document_class")
 
-test_that("document_class runs end-to-end", {
+test_that("document_class runs end-to-end for a simple class", {
 
     someClass <- R6::R6Class(
         classname = "TestClass"
@@ -11,6 +11,26 @@ test_that("document_class runs end-to-end", {
 
     expect_true(is.character(res))
     expect_true(length(res) == 1)
+    expect_true(nchar(res) > 0)
+})
+
+test_that("document_class runs end-to-end for a class with public methods and fields", {
+
+    someClass <- R6::R6Class(
+        classname = "TestClass",
+        public = list(
+            a_function = function(x = 5, some_arg = TRUE){TRUE},
+            another_function = function(){NULL},
+            a_value = list(thing = LETTERS),
+            another_value = NULL
+        )
+    )
+
+    res <- document_class(someClass)
+
+    expect_true(is.character(res))
+    expect_true(length(res) == 1)
+    expect_true(nchar(res) > 0)
 })
 
 test_that("document_class rejects bad inputs", {
