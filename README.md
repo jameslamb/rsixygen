@@ -1,6 +1,8 @@
 
 # rsixygen
 
+[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/jameslamb/rsixygen?branch=master&svg=true)](https://ci.appveyor.com/project/jameslamb/rsixygen)
+
 There is [no built-in support for R6](https://github.com/klutometis/roxygen/issues/306) in `roxygen2`. 
 
 This package is experimental, and implements a standard proposed by @cwschultz88 for documenting these objects.
