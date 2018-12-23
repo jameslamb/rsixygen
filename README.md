@@ -2,6 +2,8 @@
 # rsixygen
 
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/jameslamb/rsixygen?branch=master&svg=true)](https://ci.appveyor.com/project/jameslamb/rsixygen)
+[![Build Status](https://travis-ci.org/jameslamb/rsixygen.svg?branch=master)](https://travis-ci.org/jameslamb/rsixygen)
+[![codecov](https://codecov.io/gh/jameslamb/rsixygen/branch/master/graph/badge.svg)](https://codecov.io/gh/jameslamb/rsixygen)
 
 There is [no built-in support for R6](https://github.com/klutometis/roxygen/issues/306) in `roxygen2`. 
 
