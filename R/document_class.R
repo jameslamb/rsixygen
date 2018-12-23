@@ -278,9 +278,6 @@ CLONE_RETURN <- "Cloned object of this class."
 }
 
 
-
-
-
 #' @title Document an R6 Class
 #' @name document_class
 #' @description Given an R6 class, build a Roxygen documentation skeleton
@@ -325,15 +322,14 @@ document_class <- function(aClass){
     )
 
     outSections <- c(
-        "\n "
-        , .inherit_link(aClass)
+        .inherit_link(aClass)
         , .constructor_block(aClass)
         , .public_methods_block(aClass)
         , .public_field_block(aClass)
         , .special_methods_block(aClass)
     )
 
-    out <- paste0(outSections, collapse = "\n")
+    out <- paste0("\n ", outSections, collapse = "\n")
 
     # This last little gsub makes them Roxygen comments!
     return(return(gsub("\n", "\n#' ", out)))

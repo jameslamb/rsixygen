@@ -20,7 +20,7 @@ find_R6_objects <- function(pkg_name){
             if (R6::is.R6Class(obj)){
                 return(obj)
             } else {
-                return(NULL)
+                return(invisible(NULL))
             }
         }
     )
