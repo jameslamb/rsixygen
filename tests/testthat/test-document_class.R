@@ -14,7 +14,7 @@ test_that("document_class runs end-to-end for a simple class", {
     expect_true(nchar(res) > 0)
 })
 
-test_that("document_class runs end-to-end for a class with public methods and fields", {
+test_that("document_class works as expected for a class with public methods and fields", {
 
     someClass <- R6::R6Class(
         classname = "TestClass",
@@ -27,6 +27,33 @@ test_that("document_class runs end-to-end for a class with public methods and fi
     )
 
     res <- document_class(someClass)
+
+    expect_true(is.character(res))
+    expect_true(length(res) == 1)
+    expect_true(nchar(res) > 0)
+})
+
+test_that("document_class runs end-to-end for a class with public methods and fields which inherits from a non-base", {
+
+    someClass <- R6::R6Class(
+        classname = "TestClass",
+        public = list(
+            a_function = function(x = 5, some_arg = TRUE){TRUE},
+            another_function = function(){NULL},
+            a_value = list(thing = LETTERS),
+            another_value = NULL
+        )
+    )
+
+    someChildClass <- R6::R6Class(
+        classname = "TestClass2",
+        inherit = someClass,
+        public = list(
+            a_third_function = function(m = 'yup', some_other_arg){NULL}
+        )
+    )
+
+    res <- document_class(someChildClass)
 
     expect_true(is.character(res))
     expect_true(length(res) == 1)
