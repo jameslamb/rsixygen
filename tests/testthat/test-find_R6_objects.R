@@ -17,15 +17,7 @@ test_that("find_R6_objects works as expected for a package with no R6 object", {
 
 test_that("find_R6_objects works as expected for a package with R6 objects", {
 
-    # This is tough because CRAN doesn't let you install new packages
-    # on the testing servers and there aren't any we can reliably assume will
-    # be available. Solution: skip these tests on CRAN, run on other CI
-    testthat::skip_on_cran()
-
-    # Crazy stuff to deal with the way Travis handles libraries
-    if (Sys.getenv("TRAVIS") == "true"){
-        .libPaths("/home/travis/R-bin/lib/R/library")
-    }
+    testthat::skip("Not really testing find_r6_objects. See https://github.com/jameslamb/rsixygen/issues/17")
 
     res <- find_R6_objects(pkg_name = "milne")
     expect_true(methods::is(res, "list"))

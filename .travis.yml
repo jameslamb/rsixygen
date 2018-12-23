@@ -3,12 +3,8 @@ cache: packages
 warnings_are_errors: true
 
 before_install:
-- Rscript -e "print(.libPaths())"
 - Rscript -e "install.packages('roxygen2', repos = 'http://cran.rstudio.org')"
 - Rscript -e "install.packages('devtools', repos = 'http://cran.rstudio.org')"
-# Tests need something w/ R6, this is horrible but fast
-- Rscript -e "devtools::install_github(repo = 'UptakeOpenSource/pkgnet', subdir = 'inst/milne')"
-- Rscript -e "print(.libPaths())"
 
 after_success:
     - Rscript -e 'install.packages("covr"); covr::codecov()'
