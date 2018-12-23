@@ -16,7 +16,7 @@ document_package <- function(pkg_name, out_dir = file.path(getwd(), "roxy_docsy"
     R6_objects <- find_R6_objects(pkg_name)
 
     if (length(R6_objects) == 0){
-        print(sprintf("No R6 objects found in %s", pkg_name))
+        warning(sprintf("No R6 objects found in %s", pkg_name))
         return(invisible(NULL))
     }
 

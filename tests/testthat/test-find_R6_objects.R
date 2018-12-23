@@ -22,7 +22,12 @@ test_that("find_R6_objects works as expected for a package with R6 objects", {
     # be available. Solution: skip these tests on CRAN, run on other CI
     testthat::skip_on_cran()
 
-    res <- find_R6_objects(pkg_name = "pkgnet")
+    # Crazy stuff to deal with the way Travis handles libraries
+    if (Sys.getenv("TRAVIS") == "true"){
+        .libPaths("/home/travis/R-bin/lib/R/library")
+    }
+
+    res <- find_R6_objects(pkg_name = "milne")
     expect_true(methods::is(res, "list"))
     expect_true(length(res) > 0)
     expect_true(all(sapply(res, R6::is.R6Class)))
