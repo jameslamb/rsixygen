@@ -6,6 +6,7 @@
 #' @param pkg_name Name of the package to document
 #' @param out_dir Directory to write documentation to
 #' @importFrom assertthat assert_that is.string
+#' @importFrom R6 is.R6Class
 #' @export
 document_package <- function(pkg_name, out_dir = file.path(getwd(), "roxy_docsy")){
 
@@ -13,7 +14,10 @@ document_package <- function(pkg_name, out_dir = file.path(getwd(), "roxy_docsy"
         assertthat::is.string(pkg_name)
     )
 
-    R6_objects <- find_R6_objects(pkg_name)
+    R6_objects <- Filter(
+        f = function(o){R6::is.R6Class(o)}
+        , x = as.list(loadNamespace(pkg_name))
+    )
 
     if (length(R6_objects) == 0){
         warning(sprintf("No R6 objects found in %s", pkg_name))

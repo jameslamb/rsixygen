@@ -2,10 +2,10 @@
 
 export(document_class)
 export(document_package)
-export(find_R6_objects)
 importFrom(R6,R6Class)
 importFrom(R6,is.R6Class)
 importFrom(assertthat,assert_that)
 importFrom(assertthat,is.string)
+importFrom(stats,setNames)
 importFrom(utils,capture.output)
 importFrom(utils,str)
