@@ -4,7 +4,7 @@ set -e
 git config --global user.email "brucezhaor2016@gmail.com"
 git config --global user.name "BruceZhaoR"
 
-git clone -q -b gh-pages https://${GITHUB_PAT}@github.com/brucezhaor/lightgbm_r.git output
+git clone -q -b gh-pages https://${GITHUB_PAT}@github.com/brucezhaor/rsixygen.git output
 cd output
 git rm -rf *
   cp -r ../docs/* ./
