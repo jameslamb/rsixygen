@@ -8,18 +8,36 @@ init:
         Import-Module '..\appveyor-tool.ps1'
 
 install:
-  ps: Bootstrap
+  - ps: Bootstrap
+  - cinst pandoc
+  - ps: $env:Path += ";C:\Program Files\Pandoc\"
 
 cache:
   - C:\RLibrary
+  - C:\ProgramData\chocolatey\bin -> appveyor.yml
+  - C:\ProgramData\chocolatey\lib -> appveyor.yml
+  - C:\Program Files\Pandoc\
 
 # Adapt as necessary starting from here
+environment:
+  matrix:
+    - R_VERSION: stable
+      R_ARCH: x64
+      GCC_PATH: mingw_64
+      CRAN: https://cran.rstudio.com
+
+platform: x64
 
 build_script:
+  - pandoc -v
   - travis-tool.sh install_deps
+  - Rscript.exe --verbose ./pkgdown/build-site.R
 
 test_script:
   - travis-tool.sh run_tests
+
+on_finish:
+  - bash.exe ./pkgdown/deploy.sh
 
 on_failure:
   - 7z a failure.zip *.Rcheck\*

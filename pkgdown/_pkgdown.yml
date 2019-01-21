@@ -1,0 +1,27 @@
+url: https://jameslamb.github.io/rsixygen/
+
+template:
+  params:
+    bootswatch: united
+
+navbar:
+  type: default
+  left:
+  - icon: fa-home fa-lg
+    href: index.html
+  - text: Reference
+    href: reference/index.html
+  - text: News
+    href: news/index.html
+  right:
+  - icon: fa-github fa-lg
+    href: https://github.com/jameslamb/rsixygen
+
+#reference:
+#  - title: Document an R6 Class
+#    contents:
+#    - document_class
+#  - title: Get R6 skeleton for a package
+#    contents:
+#    - document_package
+
