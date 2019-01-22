@@ -16,6 +16,7 @@ Imports:
     utils
 Suggests:
     testthat
+URL: https://jameslamb.github.io/rsixygen
 BugReports: https://github.com/jameslamb/rsixygen/issues
 License: file LICENSE
 LazyData: TRUE
