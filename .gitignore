@@ -1,6 +1,0 @@
-.Rproj.user
-*.Rproj
-
-# build artifacts
-**/*.Rcheck
-**/*.tar.gz
