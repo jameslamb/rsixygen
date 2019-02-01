@@ -16,7 +16,9 @@ Imports:
     utils
 Suggests:
     testthat
+URL: https://jameslamb.github.io/rsixygen
 BugReports: https://github.com/jameslamb/rsixygen/issues
 License: file LICENSE
 LazyData: TRUE
+Encoding: UTF-8
 RoxygenNote: 6.1.1

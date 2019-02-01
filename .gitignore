@@ -4,3 +4,6 @@
 # build artifacts
 **/*.Rcheck
 **/*.tar.gz
+
+# pkgdown
+docs/
