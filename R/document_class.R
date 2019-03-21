@@ -125,7 +125,7 @@ CLONE_RETURN <- "Cloned object of this class."
 #' @importFrom stats setNames
 .describe_public_methods <- function(aClass) {
 
-    # Intialize empty vector to append additional method descriptions to
+    # Initialize empty vector to append additional method descriptions to
     out <- NULL
 
     # If this class has a parent class, do the parent first
@@ -183,7 +183,7 @@ CLONE_RETURN <- "Cloned object of this class."
 # (both static fields and active bindings)
 .get_public_fields <- function(aClass) {
 
-    # Intialize empty vector to append additional method descriptions to
+    # Initialize empty vector to append additional method descriptions to
     out <- NULL
 
     # If this class has a parent class, do the parent first
