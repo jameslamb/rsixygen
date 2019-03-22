@@ -4,4 +4,4 @@
 set -e
 
 # Install other packages
-Rscript -e "install.packages(c('roxygen2', 'devtools'), repos = 'http://cran.rstudio.org')"
+Rscript -e "install.packages(c('roxygen2', 'devtools', 'argparse'), repos = 'http://cran.rstudio.org')"
