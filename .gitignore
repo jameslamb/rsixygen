@@ -1,5 +1,7 @@
+# misc files
 .Rproj.user
 *.Rproj
+**/.Rhistory
 
 # build artifacts
 **/*.Rcheck
