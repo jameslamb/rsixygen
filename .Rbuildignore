@@ -33,6 +33,7 @@ vignettes/*\.html
 vignettes/*\.pdf
 ^Meta$
 ^doc$
+^pkgdown$
 
 # Temporary files created by R markdown
 .*\.utf8\.md
