@@ -26,8 +26,10 @@ cp -r ../docs/* ./
 
 echo "[INFO] checking files into the repo"
 git add --all *
-git commit -m "Update the site from appveyor"
+
+echo "[INFO]"
+git commit -m "Update the site from appveyor" || exit 0
 
 echo "[INFO] pushing to gh-pages branch"
-git push -q origin gh-pages
+git push -q origin gh-pages || exit 0
 echo "[INFO] successfully updated gh-pages branch"
