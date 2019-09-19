@@ -1,11 +1,19 @@
-# misc files
+
+# R stuff
 .Rproj.user
 *.Rproj
 **/.Rhistory
+**/*.rda
+**/*.rds
+**/*.Rdata
 
 # build artifacts
 **/*.Rcheck
 **/*.tar.gz
+**/*.zip
 
 # pkgdown
 docs/
+
+# aspell check stuff
+**/*.bak

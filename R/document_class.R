@@ -19,9 +19,10 @@ CLONE_RETURN <- "Cloned object of this class."
     parentClassName <- deparse(aClass$inherit)
     parentClassEnv <- environmentName(aClass$get_inherit()$parent_env)
 
-    out <- sprintf("Inherits: \\code{\\link[%s]{%s}}\n"
-                   , parentClassEnv
-                   , parentClassName
+    out <- sprintf(
+        "Inherits: \\code{\\link[%s]{%s}}\n"
+        , parentClassEnv
+        , parentClassName
     )
 
     return(out)
@@ -64,8 +65,6 @@ CLONE_RETURN <- "Cloned object of this class."
         , "        \\itemize{\n"
         , "            \\item{~~DESCRIBE THE METHOD~~}\n"
     )
-
-    # Add arguments?
 
     # Throws unavoidable warning if no arguments, but we don't really care
     los_argumentos <- suppressWarnings({
@@ -125,7 +124,7 @@ CLONE_RETURN <- "Cloned object of this class."
 #' @importFrom stats setNames
 .describe_public_methods <- function(aClass) {
 
-    # Intialize empty vector to append additional method descriptions to
+    # Initialize empty vector to append additional method descriptions to
     out <- NULL
 
     # If this class has a parent class, do the parent first
@@ -183,7 +182,7 @@ CLONE_RETURN <- "Cloned object of this class."
 # (both static fields and active bindings)
 .get_public_fields <- function(aClass) {
 
-    # Intialize empty vector to append additional method descriptions to
+    # Initialize empty vector to append additional method descriptions to
     out <- NULL
 
     # If this class has a parent class, do the parent first
