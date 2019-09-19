@@ -3,12 +3,32 @@
 # Failure is a natural part of life
 set -e
 
-Rscript -e "devtools::document()"
-Rscript -e "devtools::test()"
+export CI_TOOLS=$(pwd)/.ci
+export R_PACKAGE_DIR=$(pwd)
 
-echo "Checking code for R style problems..."
+echo "========================="
+echo "= Building roxygen docs ="
+echo "========================="
 
-    Rscript $(pwd)/.ci/lint_r_code.R \
+    Rscript -e "devtools::document()"
+
+echo "========================================="
+echo "= Checking code for R style problems... ="
+echo "========================================="
+
+    Rscript ${CI_TOOLS}/lint_r_code.R \
         --package-dir $(pwd)/
 
-echo "Done checking code for style problems."
+echo "done checking code for style problems."
+
+echo "======================="
+echo "= Running R CMD CHECK ="
+echo "======================="
+
+    Rscript ${CI_TOOLS}/r_cmd_check_test.R \
+        --pkg-dir $(pwd)/ \
+        --allowed-notes 0 \
+        --allowed-warnings 0 \
+        --allowed-errors 0
+
+echo "done running R CMD CHECK"
