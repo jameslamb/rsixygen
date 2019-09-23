@@ -32,3 +32,4 @@ echo "======================="
         --allowed-errors 0 || echo "yeck"
 
 echo "done running R CMD CHECK"
+exit 0
