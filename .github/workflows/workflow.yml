@@ -1,0 +1,32 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: macOS-latest
+    steps:
+      # check out the source for whatever commit triggered
+      # this build
+      - name: Check package
+        uses: actions/checkout@master
+      - name: Installing R
+        env:
+          CRAN: https://cloud.r-project.org
+        run: |
+           curl -fLo /tmp/R.pkg "${CRAN}/bin/macosx/R-latest.pkg"
+           sudo installer -pkg "/tmp/R.pkg" -target /
+           rm /tmp/R.pkg
+      - name: Setting up R library
+        env:
+          R_LIBS_USER: ~/R/library
+          CRAN: https://cloud.r-project.org
+        run: |
+          echo 'options(repos = Sys.getenv("CRAN"), Ncpus = 2, crayon.enabled = FALSE)' > ~/.Rprofile
+          mkdir -p ${R_LIBS_USER}
+      - name: Set up environment
+        run: |
+            ./.ci/setup.sh
+      - name: Testing stuff
+        run: |
+          ./.ci/test.sh
