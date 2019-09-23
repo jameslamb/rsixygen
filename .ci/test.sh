@@ -11,7 +11,6 @@ echo "= Building roxygen docs ="
 echo "========================="
 
     Rscript -e "devtools::document()"
-    exit 10
 
 echo "========================================="
 echo "= Checking code for R style problems... ="
@@ -19,6 +18,8 @@ echo "========================================="
 
     Rscript ${CI_TOOLS}/lint_r_code.R \
         --package-dir $(pwd)/
+
+    exit 10
 
 echo "done checking code for style problems."
 
