@@ -11,6 +11,7 @@ echo "= Building roxygen docs ="
 echo "========================="
 
     Rscript -e "devtools::document()"
+    exit 10
 
 echo "========================================="
 echo "= Checking code for R style problems... ="

@@ -8,7 +8,7 @@ jobs:
     steps:
       # check out the source for whatever commit triggered
       # this build
-      - name: Check package
+      - name: check-out-source-code
         uses: actions/checkout@master
       - name: Installing R
         env:
