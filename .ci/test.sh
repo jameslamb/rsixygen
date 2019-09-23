@@ -29,6 +29,6 @@ echo "======================="
         --pkg-dir $(pwd)/ \
         --allowed-notes 0 \
         --allowed-warnings 0 \
-        --allowed-errors 0
+        --allowed-errors 0 || echo "yeck"
 
 echo "done running R CMD CHECK"
