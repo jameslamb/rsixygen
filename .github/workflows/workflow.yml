@@ -3,7 +3,7 @@ name: CI
 on: [push]
 
 jobs:
-  build:
+  test:
     runs-on: macOS-latest
     steps:
       # check out the source for whatever commit triggered
