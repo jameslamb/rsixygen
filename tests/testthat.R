@@ -4,6 +4,6 @@
 Sys.setenv("R_TESTS" = "")
 
 library(rsixygen)
+library(testthat)
 
 testthat::test_check('rsixygen')
-print(.libPaths())

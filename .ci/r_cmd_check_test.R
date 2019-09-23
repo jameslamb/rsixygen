@@ -54,7 +54,7 @@ Sys.setenv("TZ" = "UTC")
 res <- devtools::check(
     pkg = PKG_DIR
     , document = TRUE
-    , args = c('--no-tests', '--ignore-vignettes', '--no-manual')
+    , args = c('--ignore-vignettes', '--no-manual')
     , quiet = FALSE
 
     # we do custom error-handling

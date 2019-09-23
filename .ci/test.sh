@@ -19,8 +19,6 @@ echo "========================================="
     Rscript ${CI_TOOLS}/lint_r_code.R \
         --package-dir $(pwd)/
 
-    exit 10
-
 echo "done checking code for style problems."
 
 echo "======================="
