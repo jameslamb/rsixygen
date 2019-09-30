@@ -25,7 +25,7 @@ echo "======================="
 echo "= Running R CMD CHECK ="
 echo "======================="
 
-    Rscript -e "devtools::test()"
+    Rscript -e "devtools::test(stop_on_failure = TRUE)"
 
 echo "done running R CMD CHECK"
 exit 0
