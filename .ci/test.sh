@@ -25,7 +25,7 @@ echo "======================="
 echo "= Running R CMD CHECK ="
 echo "======================="
 
-    Rscript -e "devtools::test(stop_on_failure = TRUE)"
+    Rscript -e "testthat::test_dir('tests/testthat', stop_on_failure = TRUE)"
 
 echo "done running R CMD CHECK"
 exit 0
