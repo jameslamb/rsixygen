@@ -2,27 +2,25 @@
 library(argparse)
 library(lintr)
 
-parser <- argparse::ArgumentParser()
-parser$add_argument(
-    "--package-dir"
-    , type = "character"
-    , help = "Fully-qualified directory to an R package"
+args <- commandArgs(
+    trailingOnly = TRUE
 )
-args <- parser$parse_args()
-
-PACKAGE_DIR_TO_LINT <- args[["package_dir"]]
+SOURCE_DIR <- args[[1]]
 
 LINTERS_TO_USE <-list(
-    "open_curly" = lintr::open_curly_linter
-    , "closed_curly" = lintr::closed_curly_linter
-    , "tabz" = lintr::no_tab_linter
-    , "spaces" = lintr::infix_spaces_linter
+    "closed_curly" = lintr::closed_curly_linter
+    , "infix_spaces" = lintr::infix_spaces_linter
+    , "long_lines" = lintr::line_length_linter(length = 120)
+    , "tabs" = lintr::no_tab_linter
+    , "open_curly" = lintr::open_curly_linter
+    , "spaces_inside" = lintr::spaces_inside_linter
+    , "spaces_left_parens" = lintr::spaces_left_parentheses_linter
     , "trailing_blank" = lintr::trailing_blank_lines_linter
     , "trailing_white" = lintr::trailing_whitespace_linter
 )
 
 result <- lintr::lint_package(
-    path = PACKAGE_DIR_TO_LINT
+    path = SOURCE_DIR
     , relative_path = FALSE
     , linters = LINTERS_TO_USE
 )
@@ -30,7 +28,7 @@ result <- lintr::lint_package(
 cat(sprintf(
     "Found %i linting errors in %s\n"
     , length(result)
-    , PACKAGE_DIR_TO_LINT
+    , SOURCE_DIR
 ))
 
 if (length(result) > 0){

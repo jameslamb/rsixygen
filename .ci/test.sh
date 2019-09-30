@@ -16,8 +16,7 @@ echo "========================================="
 echo "= Checking code for R style problems... ="
 echo "========================================="
 
-    Rscript ${CI_TOOLS}/lint_r_code.R \
-        --package-dir $(pwd)/
+    Rscript ${CI_TOOLS}/lint_r_code.R $(pwd)
 
 echo "done checking code for style problems."
 
