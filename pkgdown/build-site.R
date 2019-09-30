@@ -1,6 +1,6 @@
 print("get work directory")
 getwd()
-install.packages(c("devtools","pkgdown"), repos = "https://cran.rstudio.com", type="both")
+install.packages(c("devtools","pkgdown"), repos = "https://cran.rstudio.com", type = "both")
 
 devtools::document()
 

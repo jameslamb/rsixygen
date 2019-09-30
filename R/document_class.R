@@ -1,7 +1,10 @@
 CONSTRUCTOR_METHODS <- c("new", "initialize")
 SPECIAL_METHODS <- c("clone", "print", "finalize")
 
-CLONE_DESCRIBE <- "Method for copying an object. See \\\\href{https://adv-r.hadley.nz/r6.html#r6-semantics}{\\emph{Advanced R}} for the intricacies of R6 reference semantics."
+CLONE_DESCRIBE <- paste0(
+    "Method for copying an object. See \\\\href{https://adv-r.hadley.nz/r6.html#r6-semantics}{\\emph{Advanced R}} "
+    , "for the intricacies of R6 reference semantics."
+)
 CLONE_PARAM <- "logical. Whether to recursively clone nested R6 objects."
 CLONE_RETURN <- "Cloned object of this class."
 
