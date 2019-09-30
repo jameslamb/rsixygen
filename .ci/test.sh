@@ -25,11 +25,7 @@ echo "======================="
 echo "= Running R CMD CHECK ="
 echo "======================="
 
-    Rscript ${CI_TOOLS}/r_cmd_check_test.R \
-        --pkg-dir $(pwd)/ \
-        --allowed-notes 0 \
-        --allowed-warnings 0 \
-        --allowed-errors 0 || echo "yeck"
+    Rscript -e "devtools::test()"
 
 echo "done running R CMD CHECK"
 exit 0
