@@ -24,7 +24,12 @@ echo "======================="
 echo "= Running R CMD CHECK ="
 echo "======================="
 
-    Rscript -e "testthat::test_dir('tests/testthat', stop_on_failure = TRUE)"
+    # Rscript -e "testthat::test_dir('tests/testthat', stop_on_failure = TRUE)"
+    Rscript ${CI_TOOLS}/r_cmd_check_test.R \
+        --pkg-dir $(pwd)/ \
+        --allowed-notes 0 \
+        --allowed-warnings 0 \
+        --allowed-errors 0
 
 echo "done running R CMD CHECK"
 exit 0
