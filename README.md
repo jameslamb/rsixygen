@@ -1,4 +1,8 @@
 
+# THIS PROJECT HAS BEEN ARCHIVED
+
+As of `roxygen2` version 7.0.x, `roxygen2`  has [first-class support for doucmenting R6 objects](https://www.tidyverse.org/blog/2019/11/roxygen2-7-0-0/#r6-documentation). Using these features of `roxygen2` to document `R6` classes is an easier, less error-prone strategy.
+
 # rsixygen
 
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/jameslamb/rsixygen?branch=master&svg=true)](https://ci.appveyor.com/project/jameslamb/rsixygen)
